@@ -60,6 +60,9 @@ RCT_EXPORT_METHOD(getDeviceMotionData:(RCTResponseSenderBlock) cb) {
     double userAcceleration_x = self->_motionManager.deviceMotion.userAcceleration.x;
     double userAcceleration_y = self->_motionManager.deviceMotion.userAcceleration.y;
     double userAcceleration_z = self->_motionManager.deviceMotion.userAcceleration.z;
+    double roll = self->_motionManager.deviceMotion.attitude.roll;
+    double yaw = self->_motionManager.deviceMotion.attitude.yaw;
+    double pitch = self->_motionManager.deviceMotion.attitude.pitch;
     
     NSLog(@"getDeviceMotionData (gravity): %f, %f, %f", gravity_x, gravity_y, gravity_z);
     NSLog(@"getDeviceMotionData (userAcceleration): %f, %f, %f", userAcceleration_x, userAcceleration_y, userAcceleration_z);
@@ -74,6 +77,11 @@ RCT_EXPORT_METHOD(getDeviceMotionData:(RCTResponseSenderBlock) cb) {
                      @"x" : [NSNumber numberWithDouble:userAcceleration_x],
                      @"y" : [NSNumber numberWithDouble:userAcceleration_y],
                      @"z" : [NSNumber numberWithDouble:userAcceleration_z]
+                     },
+             @"attitude": @{
+                     @"roll" : [NSNumber numberWithDouble:roll],
+                     @"yaw" : [NSNumber numberWithDouble:yaw],
+                     @"pitch" : [NSNumber numberWithDouble:pitch]
                      }
              }]
        );
@@ -93,8 +101,13 @@ RCT_EXPORT_METHOD(startDeviceMotionUpdates) {
          double userAcceleration_x = motionData.userAcceleration.x;
          double userAcceleration_y = motionData.userAcceleration.y;
          double userAcceleration_z = motionData.userAcceleration.z;
+         double roll = motionData.attitude.roll;
+         double yaw = motionData.attitude.yaw;
+         double pitch = motionData.attitude.pitch;
+         
          NSLog(@"startDeviceMotionUpdates (gravity): %f, %f, %f", gravity_x, gravity_y, gravity_z);
          NSLog(@"startDeviceMotionUpdates (userAcceleration): %f, %f, %f", userAcceleration_x, userAcceleration_y, userAcceleration_z);
+         NSLog(@"startAttitudeUpdates: %f, %f, %f", roll, yaw, pitch);
          
          [self.bridge.eventDispatcher sendDeviceEventWithName:@"MotionData" body:@{
                                                                                    @"gravity": @{
@@ -107,6 +120,11 @@ RCT_EXPORT_METHOD(startDeviceMotionUpdates) {
                                                                                            @"y" : [NSNumber numberWithDouble:userAcceleration_y],
                                                                                            @"z" : [NSNumber numberWithDouble:userAcceleration_z]
                                                                                            },
+                                                                                   @"attitude": @{
+                                                                                           @"roll" : [NSNumber numberWithDouble:roll],
+                                                                                           @"yaw" : [NSNumber numberWithDouble:yaw],
+                                                                                           @"pitch" : [NSNumber numberWithDouble:pitch]
+                                                                                           }
                                                                                    }];
      }];
 }
